@@ -1,7 +1,7 @@
 package config
 
 import (
-	"log"
+	"fmt"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -11,14 +11,14 @@ type Config struct {
 	DatabaseURL string
 }
 
-func Load() *Config {
+func Load() (*Config, error) {
 	_ = godotenv.Load()
 
 	dbURL := os.Getenv("DATABASE_URL")
 	if dbURL == "" {
-		log.Fatal("The URL must be set")
+		return nil, fmt.Errorf("DATABASE_URL must be set")
 	}
 	return &Config{
 		DatabaseURL: dbURL,
-	}
+	}, nil
 }
